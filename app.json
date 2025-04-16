@@ -1,28 +1,43 @@
 {
   "expo": {
-    "name": "IteventsApp",
-    "slug": "IteventsApp",
+    "name": "Esciencia",
+    "slug": "AppEventosPrototype",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./app/assets/esciencia.png",
     "userInterfaceStyle": "light",
-    "newArchEnabled": true,
+    "scheme": "appeventos",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./app/assets/esciencia-logo.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "ios": {
       "supportsTablet": true
     },
     "android": {
+      "permissions": [
+        "INTERNET"
+      ],
       "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
-      }
+        "foregroundImage": "./app/assets/esciencia-logo.png",
+        "backgroundColor": "#000000"
+      },
+      "package": "com.torrutech.AppEventosPrototype"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./app/assets/favicon.png"
+    },
+    "plugins": [
+      "expo-router"
+    ],
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "bab0ff22-43f9-4729-8dab-4a02500878af"
+      }
     }
   }
 }
