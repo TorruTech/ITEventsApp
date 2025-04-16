@@ -1,20 +1,21 @@
 import React, { useCallback, useState } from "react";
 import { View, Image, StyleSheet, TouchableOpacity, ScrollView, Text } from "react-native";
-import { Loader } from "../../components/Loader";
+import { Loader } from "../../../components/Loader";
 import { Calendar } from "@marceloterreiro/flash-calendar";
-import Header from "../../components/Header";
-import { Footer } from "../../components/Footer";
-import { router } from "expo-router";
+import Header from "../../../components/Header";
+import { Footer } from "../../../components/Footer";
+import { router, useLocalSearchParams } from "expo-router";
 import { Modal, Snackbar } from "react-native-paper";
-import { FilterIcon } from "../../components/Icons";
-import { useFetchEvents } from "../../scripts/fetchEvents";
+import { FilterIcon } from "../../../components/Icons";
+import { useFetchEventsByLocation } from "../../../scripts/fetchEventsByLocation";
 
 export default function CalendarScreen() {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedEvent, setSelectedEvent] = useState(null); 
-  const { events, loading, error } = useFetchEvents();
+  const { id } = useLocalSearchParams();
+  const { events, loading, error } = useFetchEventsByLocation(id); 
 
   const showModal = () => setModalVisible(true);
   const hideModal = () => {
@@ -25,7 +26,7 @@ export default function CalendarScreen() {
   const handleDayPress = useCallback(
     (dayPressed) => {
       if (events) {
-        const selectedEvent = events.find((event) => event.fecha === dayPressed);
+        const selectedEvent = events.find((event) => event.date === dayPressed);
 
         if (selectedEvent) {
           setSelectedEvent(selectedEvent);
@@ -45,8 +46,8 @@ export default function CalendarScreen() {
   const activeDateRanges = () => {
     if (events) {
       return events.map((event) => ({
-        startId: event.fecha,
-        endId: event.fecha,
+        startId: event.date,
+        endId: event.date,
       }));
     }
   };
@@ -69,7 +70,11 @@ export default function CalendarScreen() {
 
   return (
     <View className="flex-1 bg-black">
-      <Header title="" url="/screens/ZaragozaScreen" shareMessage="No te pierdas nuestros próximos eventos 😉" />
+      <Header 
+        title="" 
+        url={`/screens/location/${id}`} 
+        shareMessage="No te pierdas nuestros próximos eventos 😉"
+      />
       <FilterIcon label={"Filtrar"} onPress={() => setModalVisible(!modalVisible)} style={styles.filterContainer}/>
       <Calendar.List
         calendarFormatLocale="pt-ES"
@@ -79,7 +84,7 @@ export default function CalendarScreen() {
         calendarSpacing={50}
         onCalendarDayPress={handleDayPress}
         calendarActiveDateRanges={activeDateRanges()}
-        calendarMinDateId="2025-01-01"
+        calendarMinDateId="2025-04-01"
         calendarFutureScrollRangeInMonths={5}
         theme={linearTheme}
       />
@@ -100,7 +105,7 @@ export default function CalendarScreen() {
         <Modal visible={modalVisible} onDismiss={hideModal} style={styles.modalContainer} animationDuration={100}>
           {selectedEvent && (
             <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
-              <Image source={{ uri: `https://dc45-188-227-144-33.ngrok-free.app/${selectedEvent.imagen}` }} style={styles.eventImage} />
+              <Image source={{ uri: selectedEvent.imageUrl }} style={styles.eventImage} />
               <Text className="text-black font-bold mb-4 text-xl self-start ml-4">Nombre de la actividad</Text>
               <Text className="text-black mb-4 text-sm self-start ml-4">{selectedEvent.name}</Text>
               <Text className="text-black font-bold mb-4 text-xl self-start ml-4">Descripción</Text>
@@ -108,7 +113,7 @@ export default function CalendarScreen() {
               <TouchableOpacity 
                   onPress={() => {
                     hideModal(); 
-                    router.push(`/screens/${selectedEvent.id}`); 
+                    router.push(`/screens/event/${selectedEvent.id}`); 
                   }}
                   style={styles.showActivityButton}>
                     <Text className="text-white">Ver actividad</Text>

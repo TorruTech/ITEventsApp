@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ActivityIndicator, Pressable, ScrollView } from "react-native";
-import { useFetchEvent } from "../../scripts/fetchEvent"; // Asegúrate de que el hook esté bien configurado
+import { useFetchEvent } from "../../scripts/fetchEventById"; 
 import { CustomLabel } from "../../components/CustomLabel";
 import { BookIcon, TicketIcon } from "../../components/Icons";
 import Header from "../../components/Header";
@@ -30,7 +30,7 @@ export default function APIScreen() {
         <View style={styles.container}>
             <Header 
                 title={"Evento"} 
-                url={"/screens/ZaragozaScreen"} 
+                url = {"/screens/location/1"}
                 shareMessage="¡Apúntate a este eventazo 😉😉!"
             />
             

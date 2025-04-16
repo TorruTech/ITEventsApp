@@ -66,7 +66,7 @@ export const Loader = () => {
 
     return (
           <Animated.Image
-                source={require('../assets/esciencia-logo.png')} 
+                source={require('../assets/technest-icon.png')} 
                 style={[
                   styles.logo, 
                   { 

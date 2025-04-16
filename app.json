@@ -4,11 +4,11 @@
     "slug": "ITEventsApp",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./app/assets/esciencia.png",
+    "icon": "./app/assets/technest.png",
     "userInterfaceStyle": "light",
-    "scheme": "appeventos",
+    "scheme": "ITEvents",
     "splash": {
-      "image": "./app/assets/esciencia-logo.png",
+      "image": "./app/assets/technest-icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -20,7 +20,7 @@
         "INTERNET"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/esciencia-logo.png",
+        "foregroundImage": "./app/assets/technest-icon.png",
         "backgroundColor": "#000000"
       },
       "package": "com.torrutech.ITEventsApp"

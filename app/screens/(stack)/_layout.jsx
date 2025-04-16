@@ -25,7 +25,7 @@ export default function StackLayout() {
                           }} 
                     />
                     <Stack.Screen 
-                        name="ZaragozaScreen" options={{ title: "Zaragoza Screen", animation: "ios_from_right" }} 
+                        name="LocationScreen" options={{ title: "Location Screen", animation: "ios_from_right" }} 
                     />
                     <Stack.Screen 
                         name="EventScreen" options={{ title: "Event Screen", animation: "ios_from_right"}} 

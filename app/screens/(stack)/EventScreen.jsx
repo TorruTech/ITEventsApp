@@ -12,7 +12,7 @@ export default function EventScreen() {
         <View style={styles.container}>
             <Header 
                 title = {"Entrada"} 
-                url = {"/screens/ZaragozaScreen"}
+                url = {"/screens/location/1"}
                 shareMessage = "¡Apúntate a este eventazo 😉😉!"
             />
             

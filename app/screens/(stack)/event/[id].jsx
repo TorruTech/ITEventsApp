@@ -1,18 +1,18 @@
 
 import React, { useEffect, useState } from "react";
-import Header from "../../components/Header";
+import Header from "../../../components/Header";
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import { useLocalSearchParams, Link } from "expo-router";
-import { EventImage } from "../../components/EventImage";
-import { Loader } from "../../components/Loader";
-import { CustomLabel } from "../../components/CustomLabel";
-import { TicketIcon, InstagramIcon, FacebookIcon, XIcon, YoutubeIcon } from "../../components/Icons";
-import { Footer } from "../../components/Footer";
+import { EventImage } from "../../../components/EventImage";
+import { Loader } from "../../../components/Loader";
+import { CustomLabel } from "../../../components/CustomLabel";
+import { TicketIcon, InstagramIcon, FacebookIcon, XIcon, YoutubeIcon } from "../../../components/Icons";
+import { Footer } from "../../../components/Footer";
 import { format } from "date-fns";
-import { DownloadButton } from "../../components/buttons/DownloadButton";
+import { DownloadButton } from "../../../components/buttons/DownloadButton";
 
 export default function EventDetail() {
-  const { id } = useLocalSearchParams(); 
+  const { id, locationId } = useLocalSearchParams(); 
   const [event, setEvent] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showFooter, setShowFooter] = useState(true);
@@ -28,7 +28,7 @@ export default function EventDetail() {
   useEffect(() => {
     const fetchEventData = async () => {
       try {
-        const response = await fetch(`https://dc45-188-227-144-33.ngrok-free.app/event/${id}`);
+        const response = await fetch(`https://iteventsbackend.onrender.com/api/events/${id}`);
         const data = await response.json();
         setEvent(data);
       } catch (error) {
@@ -57,32 +57,41 @@ export default function EventDetail() {
     );
   }
 
+  const labelsArray = (() => {
+    try {
+      return event.labels ? JSON.parse(event.labels) : [];
+    } catch (err) {
+      console.error("Error parsing labels:", err);
+      return [];
+    }
+  })();
+  
   return (
     <View style={styles.container}>
         <Header 
-            title={"Actividad"} 
-            url={"/screens/ZaragozaScreen"} 
+            title={"Evento"} 
+            url={`/screens/location/${locationId}`} 
             shareMessage="¡Apúntate a este eventazo 😉😉!"
         />
         
         <ScrollView style={styles.scrollViewContainer} onScroll={handleScroll}
           showsVerticalScrollIndicator = {false} >
                  <EventImage 
-                    source={{ uri: `https://dc45-188-227-144-33.ngrok-free.app/${event.imagen}` }} 
-                    date={format(new Date(event.fecha), 'dd/MM/yyyy')}/>
+                    source={{ uri: event.imageUrl }}
+                    date={format(new Date(event.date), 'dd/MM/yyyy')}/>
        
             <View>
                 <Text style={styles.h2}>Descripción</Text>
                 <Text style={styles.paragraph}>{event.description}</Text>
 
                 <View style={{ flexDirection: "row", flexWrap: "wrap", marginLeft: 8 }}>
-                    {event.etiquetas && event.etiquetas.split(",").map((label, index) => (
-                        <CustomLabel key={index} text={label} />
-                    ))}
+                  {labelsArray.map((label, index) => (
+                    <CustomLabel key={index} text={label} />
+                  ))}
                 </View>
 
                 <Text style={styles.h2}>Fecha y lugar</Text>
-                <Text style={styles.paragraph}>{event.date}</Text>
+                <Text style={styles.paragraph}>{event.dateDescription}</Text>
 
                 <DownloadButton/>
             </View>
