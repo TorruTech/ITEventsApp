@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Esciencia",
-    "slug": "AppEventosPrototype",
+    "name": "TechNest",
+    "slug": "ITEventsApp",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./app/assets/esciencia.png",
@@ -23,7 +23,7 @@
         "foregroundImage": "./app/assets/esciencia-logo.png",
         "backgroundColor": "#000000"
       },
-      "package": "com.torrutech.AppEventosPrototype"
+      "package": "com.torrutech.ITEventsApp"
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
