@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
         backgroundColor: "#000",
         paddingHorizontal: 10,
         marginTop: "2%",
-        paddingVertical: 5,
     },
     title: {
         color: "#fff",

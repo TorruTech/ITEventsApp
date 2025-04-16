@@ -96,7 +96,7 @@ export default function LoginScreen() {
         <TextLabel label={"Contraseña"} style={styles.input} value={password} onChangeText={setPassword} secureText={true} hasEye={true}/>
         
         <View style={{display: "flex", flexDirection: "row", justifyContent: "center", gap: 3}}>
-          <Text style={styles.smallText}>¿Has olvidado tu cotraseña? Haz click</Text>
+          <Text style={styles.smallText}>¿Has olvidado tu contraseña? Haz click</Text>
           <TouchableHighlight onPress={resetPassword}>
              <Text style={[ styles.smallText, {color: "#B196FF" }]}>aquí</Text>
           </TouchableHighlight>

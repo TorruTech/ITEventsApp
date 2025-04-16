@@ -8,7 +8,7 @@ export const Footer = () => {
         <View style={styles.footerContainer}>
             <HomeIcon />
             <ProfileIcon />
-            <FavoriteIcon onPress={() => router.push("/screens/CalendarScreen")}/>
+            <FavoriteIcon onPress={() => router.push("/screens/calendar/1")}/>
         </View>
     );
 };

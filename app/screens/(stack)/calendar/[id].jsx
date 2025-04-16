@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from "react";
 import { View, Image, StyleSheet, TouchableOpacity, ScrollView, Text } from "react-native";
 import { Loader } from "../../../components/Loader";
-import { Calendar } from "@marceloterreiro/flash-calendar";
+import { CalendarList, LocaleConfig } from 'react-native-calendars';
 import Header from "../../../components/Header";
 import { Footer } from "../../../components/Footer";
 import { router, useLocalSearchParams } from "expo-router";
 import { Modal, Snackbar } from "react-native-paper";
 import { FilterIcon } from "../../../components/Icons";
 import { useFetchEventsByLocation } from "../../../scripts/fetchEventsByLocation";
+import { format } from "date-fns";
 
 export default function CalendarScreen() {
   const [snackbarVisible, setSnackbarVisible] = useState(false);
@@ -24,33 +25,51 @@ export default function CalendarScreen() {
   };
 
   const handleDayPress = useCallback(
-    (dayPressed) => {
-      if (events) {
-        const selectedEvent = events.find((event) => event.date === dayPressed);
+    (day) => {
+      const pressedDate = day.dateString;
+      const selected = events.find(
+        (event) => format(new Date(event.date), 'yyyy-MM-dd') === pressedDate
+      );
 
-        if (selectedEvent) {
-          setSelectedEvent(selectedEvent);
-          showModal(); 
-        } else {
-          setSnackbarMessage(`No hay actividades programadas para el día ${dayPressed}`);
-          setSnackbarVisible(true);
-        }
+      if (selected) {
+        setSelectedEvent(selected);
+        showModal(); 
       } else {
-        setSnackbarMessage(`No hay actividades programadas para el día ${dayPressed}`);
+        setSnackbarMessage(`No hay actividades programadas para el día ${pressedDate}`);
         setSnackbarVisible(true);
       }
     },
     [events]
   );
 
-  const activeDateRanges = () => {
-    if (events) {
-      return events.map((event) => ({
-        startId: event.date,
-        endId: event.date,
-      }));
-    }
+  LocaleConfig.locales['es'] = {
+    monthNames: [
+      'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+      'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+    ],
+    monthNamesShort: [
+      'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun',
+      'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'
+    ],
+    dayNames: [
+      'Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'
+    ],
+    dayNamesShort: ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'],
+    today: 'Hoy'
   };
+  
+  LocaleConfig.defaultLocale = 'es';
+
+  const markedDates = events?.reduce((acc, event) => {
+    const formattedDate = format(new Date(event.date), 'yyyy-MM-dd');
+    acc[formattedDate] = {
+      marked: true,
+      dotColor: "#B196FF",
+      selectedColor: "#B196FF",
+      selected: true
+    };
+    return acc;
+  }, {}) || {};
 
   if (loading) {
     return (
@@ -69,24 +88,26 @@ export default function CalendarScreen() {
   }
 
   return (
-    <View className="flex-1 bg-black">
+    <View style={{ flex: 1, backgroundColor: "#000" }}>
       <Header 
         title="" 
         url={`/screens/location/${id}`} 
         shareMessage="No te pierdas nuestros próximos eventos 😉"
       />
-      <FilterIcon label={"Filtrar"} onPress={() => setModalVisible(!modalVisible)} style={styles.filterContainer}/>
-      <Calendar.List
-        calendarFormatLocale="pt-ES"
-        calendarDayHeight={50}
-        calendarFirstDayOfWeek="monday"
-        calendarRowHorizontalSpacing={6}
-        calendarSpacing={50}
-        onCalendarDayPress={handleDayPress}
-        calendarActiveDateRanges={activeDateRanges()}
-        calendarMinDateId="2025-04-01"
-        calendarFutureScrollRangeInMonths={5}
-        theme={linearTheme}
+
+      <FilterIcon label={"Filtrar"} onPress={() => alert("Filtrado no implementado")} style={styles.filterContainer} />
+
+      <CalendarList
+        onDayPress={handleDayPress}
+        markedDates={markedDates}
+        pastScrollRange={0}
+        futureScrollRange={5}
+        scrollEnabled={true}
+        showScrollIndicator={false}
+        firstDay={1}
+        markingType="dot"
+        theme={calendarTheme}
+        style={{ marginTop: 10, marginBottom: 90 }}
       />
 
       <Snackbar
@@ -102,28 +123,29 @@ export default function CalendarScreen() {
         {snackbarMessage}
       </Snackbar>
 
-        <Modal visible={modalVisible} onDismiss={hideModal} style={styles.modalContainer} animationDuration={100}>
-          {selectedEvent && (
-            <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
-              <Image source={{ uri: selectedEvent.imageUrl }} style={styles.eventImage} />
-              <Text className="text-black font-bold mb-4 text-xl self-start ml-4">Nombre de la actividad</Text>
-              <Text className="text-black mb-4 text-sm self-start ml-4">{selectedEvent.name}</Text>
-              <Text className="text-black font-bold mb-4 text-xl self-start ml-4">Descripción</Text>
-              <Text className="text-black mb-4 text-sm self-start ml-4 mr-3 text-justify">{selectedEvent.description}</Text>
-              <TouchableOpacity 
-                  onPress={() => {
-                    hideModal(); 
-                    router.push(`/screens/event/${selectedEvent.id}`); 
-                  }}
-                  style={styles.showActivityButton}>
-                    <Text className="text-white">Ver actividad</Text>
-              </TouchableOpacity>
-              <TouchableOpacity onPress={hideModal} style={styles.closeActivityButton}>
-                 <Text style={styles.closeText}>Cerrar</Text>
-              </TouchableOpacity>
-            </ScrollView>
-          )}
-        </Modal>
+      <Modal visible={modalVisible} onDismiss={hideModal} style={styles.modalContainer} animationDuration={100}>
+        {selectedEvent && (
+          <ScrollView style={styles.modalContent} showsVerticalScrollIndicator={false}>
+            <Image source={{ uri: selectedEvent.imageUrl }} style={styles.eventImage} />
+            <Text style={styles.eventTitle}>Nombre de la actividad</Text>
+            <Text style={styles.eventText}>{selectedEvent.name}</Text>
+            <Text style={styles.eventTitle}>Descripción</Text>
+            <Text style={styles.eventText}>{selectedEvent.description}</Text>
+            <TouchableOpacity 
+              onPress={() => {
+                hideModal(); 
+                router.push(`/screens/event/${selectedEvent.id}`); 
+              }}
+              style={styles.showActivityButton}
+            >
+              <Text style={styles.buttonText}>Ver actividad</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={hideModal} style={styles.closeActivityButton}>
+              <Text style={styles.closeText}>Cerrar</Text>
+            </TouchableOpacity>
+          </ScrollView>
+        )}
+      </Modal>
       <Footer />
     </View>
   );
@@ -152,8 +174,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#B196FF",  
     borderRadius: 25,        
     paddingHorizontal: 15,       
-    paddingVertical: 8,                   
-},
+    paddingVertical: 8                   
+  },
+  modalContent: {
+    width: "100%",
+    paddingHorizontal: 15,
+  },
   eventImage: {
     width: 280,
     height: 150,
@@ -161,92 +187,57 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignSelf: "center",  
   },
-  eventName: {
+  eventTitle: {
     fontSize: 18,
     fontWeight: "bold",
+    marginBottom: 4,
+    color: "#000",
+  },
+  eventText: {
+    fontSize: 14,
     marginBottom: 10,
+    textAlign: "justify",
     color: "#000",
   },
   showActivityButton: {
+    marginTop: 10,
     marginBottom: 16,
     paddingVertical: 15,
     backgroundColor: "#B196FF",
     borderRadius: 30,
-    width: 150,
     alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",
-    display: "flex",
+    width: "50%",
+  },
+  buttonText: {
+    color: "#fff",
+    fontWeight: "bold",
   },
   closeActivityButton: {
     paddingVertical: 10,
     backgroundColor: "#f0f0f0",
     borderRadius: 5,
-    width: 80,
     alignSelf: "center",
     justifyContent: "center",
     alignItems: "center",
-    display: "flex",
+    width: "30%",
   },
   closeText: {
     color: "#b196ff",
-    borderWidth: 1,
-    borderColor: "transparent",
+    fontWeight: "bold",
   },
 });
 
-const linearTheme = {
-  rowMonth: {
-    content: {
-      textAlign: "left",
-      paddingLeft: 18,
-      color: "#B196FF",
-      fontWeight: "700",
-    },
-  },
-  rowWeek: {
-    container: {
-      borderBottomWidth: 1,
-      borderBottomColor: "rgba(255, 255, 255, 0.1)",
-      borderStyle: "solid",
-    },
-  },
-  itemWeekName: { content: { color: "#B196FF" } },
-  itemDayContainer: {
-    activeDayFiller: {
-      backgroundColor: "#B196FF",
-    },
-  },
-  itemDay: {
-    idle: ({ isPressed, isWeekend }) => ({
-      container: {
-        backgroundColor: isPressed ? "#B196FF" : "transparent",
-        borderRadius: 30,
-      },
-      content: {
-        color: isWeekend && !isPressed ? "rgba(255, 255, 255, 0.5)" : "#ffffff",
-      },
-    }),
-    today: ({ isPressed }) => ({
-      container: {
-        borderRadius: isPressed ? 4 : 30,
-        backgroundColor: isPressed ? "#B196FF" : "#fff",
-      },
-      content: {
-        color: isPressed ? "#ffffff" : "#000",
-      },
-    }),
-    active: ({ isEndOfRange, isStartOfRange }) => ({
-      container: {
-        backgroundColor: "#B196FF",
-        borderTopLeftRadius: isStartOfRange ? 30 : 0,
-        borderBottomLeftRadius: isStartOfRange ? 30 : 0,
-        borderTopRightRadius: isEndOfRange ? 30 : 0,
-        borderBottomRightRadius: isEndOfRange ? 30 : 0,
-      },
-      content: {
-        color: "#ffffff",
-      },
-    }),
-  },
+const calendarTheme = {
+  backgroundColor: "#000",
+  calendarBackground: "#000",
+  textSectionTitleColor: "#B196FF",
+  monthTextColor: "#fff",
+  selectedDayBackgroundColor: "#B196FF",
+  selectedDayTextColor: "#fff",
+  todayTextColor: "#B196FF",
+  dayTextColor: "#fff",
+  textDisabledColor: "#d9e1e8",
+  dotColor: "#B196FF",
 };
