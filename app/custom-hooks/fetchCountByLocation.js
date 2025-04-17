@@ -4,7 +4,7 @@ import { useCallback } from 'react';
 
 const API_URL = 'https://iteventsbackend.onrender.com/api/events'; 
 
-export const fetchCountByLocation = async () => {
+const fetchCountByLocation = async () => {
   try {
     const response = await fetch(`${API_URL}/count-by-location`);
     if (!response.ok) {

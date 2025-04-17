@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet, ActivityIndicator, Pressable, ScrollView } from "react-native";
-import { useFetchEvent } from "../../scripts/fetchEventById"; 
+import { useFetchEvent } from "../../custom-hooks/fetchEventById"; 
 import { CustomLabel } from "../../components/CustomLabel";
 import { BookIcon, TicketIcon } from "../../components/Icons";
 import Header from "../../components/Header";

@@ -3,7 +3,7 @@ import { CityImage } from "../../components/CityImage";
 import { router } from "expo-router"
 import { Footer } from "../../components/Footer";
 import { useState } from "react";
-import { useFetchCountByLocation } from "../../scripts/fetchCountByLocation";
+import { useFetchCountByLocation } from "../../custom-hooks/fetchCountByLocation";
 
 export default function MainScreen() {
 

@@ -6,7 +6,7 @@ import { router, useLocalSearchParams } from "expo-router";
 import Header from "../../../components/Header";
 import { LocationIcon } from "../../../components/Icons";
 import { Footer } from "../../../components/Footer";
-import { useFetchEventsByLocation } from "../../../scripts/fetchEventsByLocation";
+import { useFetchEventsByLocation } from "../../../custom-hooks/fetchEventsByLocation";
 import { Loader } from "../../../components/Loader";
 
 export default function EventsByLocation() {

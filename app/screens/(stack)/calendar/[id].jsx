@@ -7,7 +7,7 @@ import { Footer } from "../../../components/Footer";
 import { router, useLocalSearchParams } from "expo-router";
 import { Modal, Snackbar } from "react-native-paper";
 import { FilterIcon } from "../../../components/Icons";
-import { useFetchEventsByLocation } from "../../../scripts/fetchEventsByLocation";
+import { useFetchEventsByLocation } from "../../../custom-hooks/fetchEventsByLocation";
 import { format } from "date-fns";
 
 export default function CalendarScreen() {
