@@ -78,7 +78,9 @@ export default function EventDetail() {
           showsVerticalScrollIndicator = {false} >
                  <EventImage 
                     source={{ uri: event.imageUrl }}
-                    date={format(new Date(event.date), 'dd/MM/yyyy')}/>
+                    date={format(new Date(event.date), 'dd/MM/yyyy')}
+                    eventName={event.name}
+                    />
        
             <View>
                 <Text style={styles.h2}>Descripción</Text>

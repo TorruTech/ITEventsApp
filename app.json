@@ -8,7 +8,7 @@
     "userInterfaceStyle": "light",
     "scheme": "ITEvents",
     "splash": {
-      "image": "./app/assets/technest-icon.png",
+      "image": "./app/assets/technest-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#000000"
     },
@@ -20,7 +20,7 @@
         "INTERNET"
       ],
       "adaptiveIcon": {
-        "foregroundImage": "./app/assets/technest-icon.png",
+        "foregroundImage": "./app/assets/technest-logo.png",
         "backgroundColor": "#000000"
       },
       "package": "com.torrutech.ITEventsApp"

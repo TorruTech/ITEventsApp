@@ -5,11 +5,11 @@ export const CityImage = ({ source, cityName, eventsNumber }) => {
 
     const displayEvents = () => {
       if (!eventsNumber) {
-        return "SIN ACTIVIDADES";
+        return "SIN EVENTOS";
       } else if (eventsNumber === 1) {
-        return "1 ACTIVIDAD";
+        return "1 EVENTO";
       } else {
-        return `${eventsNumber} ACTIVIDADES`;
+        return `${eventsNumber} EVENTOS`;
       }
     };
 

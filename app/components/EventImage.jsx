@@ -2,14 +2,14 @@ import React from "react";
 import { StyleSheet, Image, View, Text } from "react-native";
 import { ToggleFavouriteIcon } from "./Icons";
 
-export const EventImage = ({ source, date }) => {
+export const EventImage = ({ source, date, eventName }) => {
 
     return (
         <View style={styles.mainContainer}>
             <Image source={source} style={styles.image} />
             <View style={styles.eventContainer}>
                     <Text style={styles.eventText}>{date}</Text>
-                    <Text style={styles.eventText}>17:00 - 20:00 del 27 de septiembre</Text>
+                    <Text style={styles.eventNameText}>{eventName}</Text>
             </View>
             <ToggleFavouriteIcon style={styles.favouriteButton} iconStyle={{color: "#fce64e"}}/>
         </View>
@@ -39,8 +39,14 @@ const styles = StyleSheet.create({
         borderRadius: 50,
         paddingVertical: 10,
         paddingHorizontal: 15,
+        width: "50%",
       },
       eventText: {
+        color: "white",
+        fontSize: 12,
+        fontWeight: "300",
+      },
+      eventNameText: {
         color: "white",
         fontSize: 12,
         fontWeight: "300",

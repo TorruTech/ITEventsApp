@@ -1,4 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
+import { useCallback } from 'react';
 
 const API_URL = 'https://iteventsbackend.onrender.com/api/events'; 
 
@@ -22,20 +24,23 @@ export const useFetchCountByLocation = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const loadCounts = async () => {
-      try {
-        const data = await fetchCountByLocation();
-        setCounts(data);
-      } catch (err) {
-        setError(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const loadCounts = async () => {
+    try {
+      setLoading(true);
+      const data = await fetchCountByLocation();
+      setCounts(data);
+    } catch (err) {
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    loadCounts();
-  }, []);
+  useFocusEffect(
+    useCallback(() => {
+      loadCounts();
+    }, [])
+  );
 
   return { counts, loading, error };
 };

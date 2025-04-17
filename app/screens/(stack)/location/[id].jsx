@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { format } from 'date-fns';
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native"; 
+import { View, Text, StyleSheet, ScrollView, Pressable, TouchableOpacity } from "react-native"; 
 import { EventImage } from "../../../components/EventImage";  
 import { router, useLocalSearchParams } from "expo-router";
 import Header from "../../../components/Header";
@@ -55,7 +55,7 @@ export default function EventsByLocation() {
       <View style={{flex: 1, backgroundColor: "#000"}}>
        <Header title={""} url={"/screens/MainScreen"} />
        <LocationIcon url={"/screens/MainScreen"} label={cityName} style={styles.locationContainer}/>
-       <ScrollView style={styles.container} onScroll={handleScroll}>
+       <ScrollView style={styles.container} contentContainerStyle={styles.scrollContent} onScroll={handleScroll}>
            {events && events.length > 0 ? (
              events.map(event => (
                <Pressable key={event.id} onPress={() => router.push({
@@ -65,19 +65,26 @@ export default function EventsByLocation() {
               >
                  <EventImage 
                    source={{ uri: event.imageUrl }} 
-                   date={format(new Date(event.date), 'dd/MM/yyyy')}/>
+                   date={format(new Date(event.date), 'dd/MM/yyyy')}
+                   eventName={event.name}
+                   />
                </Pressable>
              ))
            ) : (
-             <View style={{ position: "absolute", top: 260 }}>
-               <Text style={{ color: "#fff", textAlign: "center" }}>Vaya... No hay eventos disponibles :(</Text>
-             </View>
+            <View style={{ flex: 1, justifyContent: "center", alignItems: "center", paddingVertical: 60 }}>
+              <Text style={{ color: "#fff", textAlign: "center" }}>
+                Vaya... No hay eventos disponibles :(
+              </Text>
+            </View>
+          
            )}
        </ScrollView>
 
-       <Pressable style={styles.calendarButton} onPress={ () => router.push(`/screens/calendar/${id}` )}>
+        {events && events.length > 0 && (
+       <TouchableOpacity style={styles.calendarButton} onPress={ () => router.push(`/screens/calendar/${id}` )}>
            <Text style={styles.calendarButtonText}>📅</Text>
-       </Pressable>
+       </TouchableOpacity>
+        )}
 
        { showFooter && <Footer /> }
        </View>  
@@ -88,7 +95,12 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000",
         marginHorizontal: 8,
-        marginTop: 10
+        marginTop: 10,
+        flex: 1
+    },
+    scrollContent: {
+        flexGrow: 1,
+        width: "100%",
     },
     locationContainer: {
       position: "absolute",
@@ -102,21 +114,22 @@ const styles = StyleSheet.create({
       alignSelf: "center",   
       top: "1.5%",
   },
-    calendarButton: {
-        position: "absolute",
-        left: 12,
-        bottom: "50%",
-        backgroundColor: "#B196FF",
-        padding: 15,
-        borderRadius: 50,
-        justifyContent: "center",
-        alignItems: "center",
-        elevation: 5,
-        shadowColor: "#000", 
-        shadowOffset: { width: 0, height: 2 }, 
-        shadowOpacity: 0.25, 
-        shadowRadius: 3.84, 
-    },
+  calendarButton: {
+    position: "absolute",
+    left: 12,         
+    top: "50%",         
+    transform: [{ translateY: -30 }],
+    backgroundColor: "#B196FF",
+    padding: 15,
+    borderRadius: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: 5,
+    shadowColor: "#000", 
+    shadowOffset: { width: 0, height: 2 }, 
+    shadowOpacity: 0.25, 
+    shadowRadius: 3.84,
+  },
     calendarButtonText: {
         fontSize: 20,
         color: "white",
