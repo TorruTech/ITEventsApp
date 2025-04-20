@@ -64,6 +64,7 @@ export default function EventsByLocation() {
               })}
               >
                  <EventImage 
+                   eventId={event.id}
                    source={{ uri: event.imageUrl }} 
                    date={format(new Date(event.date), 'dd/MM/yyyy')}
                    eventName={event.name}

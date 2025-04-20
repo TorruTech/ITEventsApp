@@ -39,6 +39,9 @@ export default function StackLayout() {
                     <Stack.Screen 
                         name="CalendarScreen" options={{ title: "Calendar Screen", animation: "ios_from_right"}} 
                     />
+                    <Stack.Screen 
+                        name="MapScreen" options={{ title: "Map Screen", animation: "ios_from_right"}}
+                    />
             </Stack>
         </View>
     );

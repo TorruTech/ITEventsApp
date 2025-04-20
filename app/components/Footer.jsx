@@ -1,4 +1,5 @@
-import { HomeIcon, HandleLoginIcon, FavoriteIcon, ProfileIcon } from "./Icons";
+import { HomeIcon, ProfileIcon } from "./Icons";
+import { FavoriteIcon } from "./favorites/FavoriteIcon";
 import { View, StyleSheet } from "react-native";
 import { router } from "expo-router";
 
@@ -8,12 +9,11 @@ export const Footer = () => {
         <View style={styles.footerContainer}>
             <HomeIcon />
             <ProfileIcon />
-            <FavoriteIcon onPress={() => router.push("/screens/calendar/1")}/>
+            <FavoriteIcon onPress={() => router.push("/screens/favorites/FavoritesScreen")}/>
         </View>
     );
 };
 
-// Cambiar el background del footer y la posición del borderradius
 const styles = StyleSheet.create({
     footerContainer: {
         position: "absolute",        
@@ -23,10 +23,9 @@ const styles = StyleSheet.create({
         flexDirection: "row",        
         justifyContent: "space-around",
         alignItems: "center",   
-        // alternar entre 0.8 o 1, se puede usar un gradiente
         opacity: 0.9,    
         paddingVertical: 10,      
         paddingHorizontal: 20,
-        backgroundColor: "black"
+        backgroundColor: "black",
     },
 });

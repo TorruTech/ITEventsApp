@@ -64,29 +64,6 @@ export const HandleLoginIcon = () => {
   );
 };
 
-export const FavoriteIcon = ({ onPress = () => {}, style = {}, iconStyle = {} }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-    <AntDesign name="star" size={36} style={iconStyle} color={iconStyle.color || "white"} />
-  </TouchableOpacity>
-);
-
-export const EmptyFavoriteIcon = ({ onPress = () => {}, style = {}, iconStyle = {} }) => (
-  <TouchableOpacity style={[styles.button, style]} onPress={onPress}>
-    <AntDesign name="staro" size={36} style={iconStyle} color={iconStyle.color || "white"} />
-  </TouchableOpacity>
-);
-
-export const ToggleFavouriteIcon = ({ onPress = () => {}, style = {}, iconStyle = {} }) => {
-  const [isFavourite, setIsFavourite] = useState(false);
-
-  return isFavourite ? (
-    <FavoriteIcon onPress={() => setIsFavourite(!isFavourite)} style={style} iconStyle={iconStyle} />
-  ) : (
-    <EmptyFavoriteIcon onPress={() => setIsFavourite(!isFavourite)} style={style} iconStyle={iconStyle} />
-  );
-
-};
-
 export const EyeIcon = (props) => (
       <AntDesign name="eyeo" size={24} color="white" /> 
 )

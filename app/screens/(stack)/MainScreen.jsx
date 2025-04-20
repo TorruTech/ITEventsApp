@@ -1,13 +1,15 @@
+import { useState } from "react";
 import { StyleSheet, ScrollView, Pressable } from "react-native";
 import { CityImage } from "../../components/CityImage";
 import { router } from "expo-router"
 import { Footer } from "../../components/Footer";
-import { useState } from "react";
 import { useFetchCountByLocation } from "../../custom-hooks/fetchCountByLocation";
+import FloatingMapButton from "../../components/buttons/FloatingMapButton";
 
 export default function MainScreen() {
 
     const [showFooter, setShowFooter] = useState(true);
+    const [showMapButton, setShowMapButton] = useState(true);
     const { counts } = useFetchCountByLocation();
 
     const getEventCount = (locationName) => {
@@ -17,11 +19,12 @@ export default function MainScreen() {
 
     const handleScroll = (event) => {
         const { contentOffset, contentSize, layoutMeasurement } = event.nativeEvent;
-
         const isAtBottom = contentOffset.y + layoutMeasurement.height >= contentSize.height - 20;
-
         setShowFooter(!isAtBottom);
     };
+
+    const handleScrollBegin = () => setShowMapButton(false);
+    const handleScrollEnd = () => setShowMapButton(true);
 
     const cities = [
         { id: 1, name: "Zaragoza", image: require("../../assets/zaragoza.jpg"), events: 8 },
@@ -36,7 +39,12 @@ export default function MainScreen() {
       
     return (
         <>
-            <ScrollView contentContainerStyle={styles.container} onScroll={handleScroll}>
+            <ScrollView 
+                contentContainerStyle={styles.container} 
+                onScroll={handleScroll}
+                onScrollBeginDrag={handleScrollBegin}
+                onScrollEndDrag={handleScrollEnd}
+            >
             {cities.map(city => (
                 <Pressable
                 key={city.id}
@@ -51,6 +59,7 @@ export default function MainScreen() {
                 </Pressable>
             ))}
             </ScrollView>
+            <FloatingMapButton visible={showMapButton}/>
             { showFooter && <Footer /> }
         </>
     );
@@ -60,5 +69,5 @@ const styles = StyleSheet.create({
     container: {
         backgroundColor: "#000",
         alignItems: "center",
-    },
+    }    
 });

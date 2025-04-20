@@ -5,34 +5,42 @@ import { TextLabel } from "../../components/form/TextInput";
 import { router } from "expo-router";
 import { createUserWithEmailAndPassword , signInWithEmailAndPassword, sendEmailVerification, sendPasswordResetEmail } from "firebase/auth";
 import { auth } from "../../../firebaseConfig.js";
-import { ALERT_TYPE, Dialog, AlertNotificationRoot, AlertNotification, Toast } from 'react-native-alert-notification';
+import { ALERT_TYPE, Dialog } from 'react-native-alert-notification';
+import { syncUserWithBackend } from "../../components/login/authService";
 
 export default function LoginScreen() {
 
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
 
-    const handleGoogleLogin = () => {
+  const handleGoogleLogin = () => {
             Linking.openURL('https://accounts.google.com/ServiceLogin');
-        };
+  };
 
-    const handleFacebookLogin = () => {
+  const handleFacebookLogin = () => {
             Linking.openURL('https://www.facebook.com/login/?locale=es_LA');
-        };
+  };
 
-    const signUp = () => {
+  const signUp = () => {
 
       createUserWithEmailAndPassword(auth, email, password)
-      .then((userCredential) => {
+      .then(async (userCredential) => {
         const user = userCredential.user;
-        sendEmailVerification(user)
-        .then(() => {
-          alert("Email sent")
-          setEmail('');
-          setPassword('');
-          console.log("Usuario registrado")
-        })
-
+  
+        await sendEmailVerification(user);
+        Dialog.show({
+          type: ALERT_TYPE.SUCCESS,
+          title: 'Email de verificación enviado',
+          button: 'Aceptar',
+          autoClose: 2000,
+        });
+        console.log("Usuario registrado");
+  
+        await syncUserWithBackend(user);
+  
+        setEmail('');
+        setPassword('');
+        router.push("/screens/MainScreen");
       })
       .catch((userCredential) => {
         console.log(userCredential);
@@ -43,23 +51,22 @@ export default function LoginScreen() {
           button: 'Aceptar',
           autoClose: 1000,
         });
-      });
-          
-  }
+      });  
+  };
 
   const logIn = () => {
     signInWithEmailAndPassword(auth, email, password)
       .then(async (res) => {
-        console.log(res);
+        const user = res.user;
         
-        try {
-          await AsyncStorage.setItem("isLoggedIn", "true");
-          console.log("Login status saved");
+        await AsyncStorage.setItem("isLoggedIn", "true");
+        console.log("Login status saved");
+
+        await syncUserWithBackend(user);
+        console.log("Usuario sincronizado con el backend");
           
-          router.push("/screens/MainScreen");
-        } catch (error) {
-          console.error("Error saving login status:", error);
-        }
+        router.push("/screens/MainScreen");
+        
       })
       .catch((err) => {
         console.log(err);
@@ -72,7 +79,7 @@ export default function LoginScreen() {
       });
   };
 
-    const resetPassword = () => {
+  const resetPassword = () => {
 
       sendPasswordResetEmail(auth, email)
       .then(() => {
@@ -80,9 +87,15 @@ export default function LoginScreen() {
       })
       .catch((error) => {
         console.log(error)
-        alert("Error enviando el email de reseteo")
+        Dialog.show({
+          type: ALERT_TYPE.DANGER,
+          title: 'Ups...',
+          textBody: 'Tienes que introducir un email',
+          button: 'Aceptar',
+          autoClose: 1000,
+        });
       });
-    }
+  };
 
   return (
     <View style={styles.container}>
