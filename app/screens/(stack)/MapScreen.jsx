@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Dimensions, Text, TouchableOpacity, Modal, Image } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker,  PROVIDER_GOOGLE } from "react-native-maps";
 import { useFetchAllEvents } from "../../custom-hooks/fetchAllEvents";
 import { format } from "date-fns";
 import { useRouter } from "expo-router";
@@ -31,6 +31,7 @@ export default function MapScreen() {
     <View style={styles.container}>
       <MapView
         style={styles.map}
+        provider={PROVIDER_GOOGLE}
         initialRegion={{
           latitude: 40.4168,
           longitude: -3.7038,
@@ -39,7 +40,12 @@ export default function MapScreen() {
         }}
       >
         {events
-          .filter(event => typeof event.latitude === 'number' && typeof event.longitude === 'number')
+          .filter(event =>
+            typeof event.latitude === 'number' &&
+            typeof event.longitude === 'number' &&
+            !isNaN(event.latitude) &&
+            !isNaN(event.longitude)
+          )          
           .map((event) => (
             <Marker
               key={event.id}
