@@ -157,12 +157,13 @@ const styles = StyleSheet.create({
     top: "5%",
     left: "10%",
     right: "10%",
-    backgroundColor: "white",
-    borderRadius: 10,
-    justifyContent: "flex-start",
-    alignItems: "center",
+    backgroundColor: "#1a1a1a", // Fondo oscuro como el del mapa
+    borderRadius: 16,
+    borderColor: "#B196FF",     // Borde violeta
+    borderWidth: 1,
     paddingVertical: 20,
-    height: 590
+    height: 590,
+    alignItems: "center",
   },
   filterContainer: {
     position: "absolute",
@@ -191,13 +192,13 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     marginBottom: 4,
-    color: "#000",
+    color: "#fff", 
   },
   eventText: {
     fontSize: 14,
     marginBottom: 10,
     textAlign: "justify",
-    color: "#000",
+    color: "#ccc", 
   },
   showActivityButton: {
     marginTop: 10,
@@ -211,7 +212,7 @@ const styles = StyleSheet.create({
     width: "50%",
   },
   buttonText: {
-    color: "#fff",
+    color: "white",
     fontWeight: "bold",
   },
   closeActivityButton: {
@@ -224,7 +225,7 @@ const styles = StyleSheet.create({
     width: "30%",
   },
   closeText: {
-    color: "#b196ff",
+    color: "#aaa",
     fontWeight: "bold",
   },
 });
