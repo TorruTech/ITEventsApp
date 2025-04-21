@@ -27,7 +27,7 @@ export default {
       package: "com.torrutech.ITEventsApp",
       config: {
         googleMaps: {
-          apiKey: "AIzaSyAVK1CHym8zp7unvXlJRUfOR-JMdq5JHQc"
+          apiKey: process.env.GOOGLE_MAPS_API_KEY
         }
       }
     },
