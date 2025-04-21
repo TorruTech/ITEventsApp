@@ -12,7 +12,7 @@ export default function StackLayout() {
                 screenOptions={{
                     headerShown: false,
                     headerStyle: { backgroundColor: '#000' },
-                    contentStyle: { backgroundColor: "#000" }
+                    contentStyle: { backgroundColor: "#000" },
                 }}
             >
                     <Stack.Screen 
@@ -25,10 +25,10 @@ export default function StackLayout() {
                           }} 
                     />
                     <Stack.Screen 
-                        name="LocationScreen" options={{ title: "Location Screen", animation: "ios_from_right" }} 
+                        name="location/[id]" options={{ title: "Location Screen", animation: "ios_from_right" }} 
                     />
                     <Stack.Screen 
-                        name="EventScreen" options={{ title: "Event Screen", animation: "ios_from_right"}} 
+                        name="event/[id]" options={{ title: "Detail Screen", animation: "ios_from_right"}} 
                     />
                     <Stack.Screen 
                         name="LoginScreen" options={{ title: "Login Screen", animation: "slide_from_bottom" }} 
@@ -37,10 +37,19 @@ export default function StackLayout() {
                         name="APIScreen" options={{ title: "API Screen", animation: "ios_from_right"}} 
                     />
                     <Stack.Screen 
-                        name="CalendarScreen" options={{ title: "Calendar Screen", animation: "ios_from_right"}} 
+                        name="calendar/[id]" 
+                        options={{ title: "Calendario", animation: "ios_from_left" }} 
                     />
                     <Stack.Screen 
-                        name="MapScreen" options={{ title: "Map Screen", animation: "ios_from_right"}}
+                        name="MapScreen" 
+                        options={{ title: "Mapa", animation: "ios_from_left" }} 
+                    />
+                    <Stack.Screen 
+                        name="favorites/FavoritesScreen" 
+                        options={{ 
+                            title: "Favoritos", 
+                            animation: "ios_from_right",
+                        }}
                     />
             </Stack>
         </View>

@@ -27,14 +27,16 @@ export default {
       package: "com.torrutech.ITEventsApp",
       config: {
         googleMaps: {
-          apiKey: process.env.GOOGLE_MAPS_API_KEY
+          apiKey: "AIzaSyAVK1CHym8zp7unvXlJRUfOR-JMdq5JHQc"
         }
       }
     },
     web: {
       favicon: "./app/assets/favicon.png"
     },
-    plugins: ["expo-router"],
+    plugins: [
+        "expo-router"
+    ],
     extra: {
       router: {
         origin: false

@@ -56,6 +56,7 @@ export default function FavoritesScreen() {
                     source={{ uri: event.imageUrl }} 
                     date={event.date}
                     eventName={event.name}
+                    isInitiallyFavorite={true}
                     />
               </Pressable>
               <View style={styles.iconContainer}>

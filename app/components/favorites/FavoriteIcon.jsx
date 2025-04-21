@@ -7,7 +7,7 @@ const API_URL = 'https://iteventsbackend.onrender.com';
 
 const styles = StyleSheet.create({
   button: {
-    padding: 8,
+    padding: 3,
   },
 });
 
@@ -23,8 +23,8 @@ export const EmptyFavoriteIcon = ({ onPress = () => {}, style = {}, iconStyle = 
   </TouchableOpacity>
 );
 
-export const ToggleFavouriteIcon = ({ eventId, style = {}, iconStyle = {}, onToggle = () => {} }) => {
-  const [isFavourite, setIsFavourite] = useState(false);
+export const ToggleFavouriteIcon = ({ eventId, style = {}, iconStyle = {}, onToggle = () => {}, isInitiallyFavorite = false }) => {
+  const [isFavourite, setIsFavourite] = useState(isInitiallyFavorite);
   const [userId, setUserId] = useState(null);
 
   useEffect(() => {
@@ -46,35 +46,35 @@ export const ToggleFavouriteIcon = ({ eventId, style = {}, iconStyle = {}, onTog
     fetchUserIdAndCheck();
   }, [eventId]);
 
-  const toggleFavourite = async () => {
-    if (!userId) return;
+    const toggleFavourite = async () => {
+      if (!userId) return;
 
-    const next = !isFavourite;
-    setIsFavourite(next);
+      const next = !isFavourite;
+      setIsFavourite(next);
 
-    try {
-      if (!next) {
-        await fetch(`${API_URL}/api/favorites/user/${userId}/event/${eventId}`, {
-          method: "DELETE",
-        });
-      } else {
-        await fetch(`${API_URL}/api/favorites`, {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            user: { id: userId },
-            event: { id: eventId },
-          }),
-        });
+      try {
+        if (!next) {
+          await fetch(`${API_URL}/api/favorites/user/${userId}/event/${eventId}`, {
+            method: "DELETE",
+          });
+        } else {
+          await fetch(`${API_URL}/api/favorites`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user: { id: userId },
+              event: { id: eventId },
+            }),
+          });
+        }
+
+        onToggle(next);
+      } catch (error) {
+        console.error("Error toggling favorite:", error);
       }
-
-      onToggle(next);
-    } catch (error) {
-      console.error("Error toggling favorite:", error);
-    }
-  };
+    };
 
   return isFavourite ? (
     <FavoriteIcon onPress={toggleFavourite} style={style} iconStyle={iconStyle} />

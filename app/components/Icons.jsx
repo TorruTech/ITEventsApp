@@ -1,3 +1,4 @@
+import FontAwesome from '@expo/vector-icons/FontAwesome';
 import FontAwesome5 from '@expo/vector-icons/FontAwesome5';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import Ionicons from '@expo/vector-icons/Ionicons';
@@ -10,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const HomeIcon = () => (
       <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/MainScreen")}>
-          <FontAwesome5 name="home" size={32} color="white" />
+          <FontAwesome5 name="home" size={24} color="white" />
       </TouchableOpacity>
 );
 
@@ -18,9 +19,21 @@ export const SearchIcon = (props) => (
     <FontAwesome5 name="search" size={32} color="white" {... props}/>
 )
 
+export const ReservationIcon = (props) => (
+  <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/LoginScreen")}>
+      <FontAwesome name="ticket" size={24} color="white" />
+    </TouchableOpacity>
+)
+
+export const FavoriteMenuIcon = (props) => (
+  <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/favorites/FavoritesScreen")}>
+    <AntDesign name="star" size={24} color="white" />
+  </TouchableOpacity>
+)
+
 export const ProfileIcon = (props) => (
     <TouchableOpacity style={styles.button} onPress={() => router.push("/screens/LoginScreen")}>
-      <FontAwesome5 name="user-alt" size={32} color="white" />
+      <FontAwesome5 name="user-alt" size={24} color="white" />
     </TouchableOpacity>
 )
 
@@ -149,7 +162,6 @@ export const LocationIcon = ({ url, label, style }) => (
 
 );
 
-
 export const FilterIcon = ({ label, onPress, style }) => (
   <TouchableOpacity style={style} onPress={ onPress }>
       <FontAwesome6 name="filter" size={24} color="white" />
@@ -157,7 +169,6 @@ export const FilterIcon = ({ label, onPress, style }) => (
   </TouchableOpacity>
 
 );
-
 
 // SOCIAL MEDIA ICONS
 export const InstagramIcon = (props) => (
@@ -204,7 +215,10 @@ const styles = StyleSheet.create({
       closeButtonText: {
         fontSize: 16,
         color: "#007BFF",
-      }
+      }, 
+      button: {
+        padding: 3,
+      },
 });
 
 

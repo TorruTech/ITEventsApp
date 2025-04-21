@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, Image, View, Text } from "react-native";
 import { ToggleFavouriteIcon } from "./favorites/FavoriteIcon";
 
-export const EventImage = ({ eventId, source, date, eventName }) => {
+export const EventImage = ({ eventId, source, date, eventName, isInitiallyFavorite = false }) => {
 
     return (
         <View style={styles.mainContainer}>
@@ -13,6 +13,7 @@ export const EventImage = ({ eventId, source, date, eventName }) => {
             </View>
             <ToggleFavouriteIcon
               eventId={eventId} 
+              isInitiallyFavorite={isInitiallyFavorite}
               style={styles.favouriteButton}
               iconStyle={{ color: "#fce64e" }}
             />
